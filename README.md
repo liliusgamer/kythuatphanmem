@@ -30,6 +30,3 @@
 - Webcam hoạt động
 - Trình duyệt web hiện đại (Chrome, Firefox, Edge)
 - Kết nối internet ổn định
-
-## Đóng góp
-Mọi đóng góp đều được hoan nghênh! Vui lòng tạo issue hoặc pull request nếu bạn muốn đóng góp vào dự án.
