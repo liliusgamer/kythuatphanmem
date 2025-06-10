@@ -1,0 +1,278 @@
+<!-- 
+    Để huấn luyện mô hình ngôn ngữ ký hiệu của riêng bạn, với tập dữ liệu tùy chỉnh. 
+ -->
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiên Dịch Ngôn Ngữ Ký Hiệu</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a658a7b479.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@tensorflow/tfjs"></script>
+    <script src="https://unpkg.com/@tensorflow-models/mobilenet"></script>
+    <script src="https://unpkg.com/@tensorflow-models/knn-classifier"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+    <!-- p5.js for model testing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.sound.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.3.1/dist/ml5.min.js"></script>
+
+    <link rel="icon" type="image/png" href="../docs/logo.png">
+    <link rel="stylesheet" type="text/css" href="../static/drusk-style.css">
+    <script src="./js/main.js"></script>
+    <script src="sketch.js"></script>
+
+    <style>
+        .tab-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .tab-button.active {
+            background-color: #ff9900;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            z-index: 99;
+        }
+
+        #status {
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            top: 25%;
+            margin: -100px 0 0 -100px;
+        }
+        
+        #videoContainer {
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .container1 {
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .hide {
+            display: none;
+        }
+
+        .spinner {
+            margin: 150px auto;
+            width: 80px;
+            height: 80px;
+            border: 10px solid #f3f3f3;
+            border-top: 10px solid #ff9900;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading"></div>
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="../index.html" class="logo drusk-logo">DRUSK <span>Sign Language</span></a>
+            <ul class="main-nav" id="js-menu">
+                <li>
+                    <a href="../index.html" class="nav-links">Hướng Dẫn</a>
+                </li>
+                <li>
+                    <a href="./Training.html" class="nav-links active">Huấn Luyện & Kiểm Tra</a>
+                </li>
+            </ul>
+            <span class="navbar-toggle" id="js-navbar-toggle">
+                <button class="btn" onClick={this.buttonclicked}><i class="fas fa-bars"></i></button>
+            </span>
+        </div>
+    </nav>
+
+    <div class="tab-container">
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab('training-tab')">Huấn Luyện Mô Hình Của Bạn</button>
+        </div>
+    </div>
+
+    <!-- Training Tab Content -->
+    <div id="training-tab" class="tab-content active">
+        <h1 class="myheading"><i class="fab fa-joomla"></i> Huấn Luyện Mô Hình Của Riêng Bạn</h1><br>
+        <div class="row">
+            <div class="col flex-container">
+                <div class="mycam">
+                    <video autoplay playsinline muted id="webcam" class="cam"></video>
+                    <div class="grey-bg">
+                        <div class="row text-center">
+                            <h3>Dự đoán: <span id="predictions"></span></h3>
+                            <h3>Xác suất : <span id="confidence"></span> %</h3>
+                        </div>
+                    </div>
+                    <button id='btnSpeak' class="btn btn-secondary btn-lg btn-shadow mb-5">Nói <i class="fas fa-microphone ml"></i></button>
+                </div>
+            </div>
+            <div class="col flex-2-container">
+                <div>
+                    <div class="model">
+                        <button class="btn btn-primary btn-lg btn-shadow" id="save_button">Tải Xuống Mô Hình <i class="fas fa-download"></i></button>
+                        <input id="load_button" class="fileinputs" type="file" accept=".json">
+                    </div>
+                    <div class="add-class text-center">
+                        <input id="inputClassName" type="text" class="form-control" placeholder="Nhập Tên Lớp Tại Đây" name="option" />
+                        <button class="btn btn-accent btn-lg btn-shadow mr-5" id="add-button">Thêm <i class="fas fa-plus fa-1x"></i></button>
+                    </div>
+                    <div id="training-cards" class="training-cards-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testing Tab Content -->
+    <div id="testing-tab" class="tab-content">
+        <h1 class="myheading" style="font-weight: bolder;"><i style="color:#ff9900;" class="fas fa-hand-sparkles"></i> Luyện Tập Bảng Chữ Cái Và Từ</h1><br>
+        <div class="body">
+            <div class="container card text-center">
+                <button id="buttonPredict" class="btn btn-secondary shadow-lg" data-toggle="button" style="color: #ff9900;">Bắt Đầu Luyện Tập!</button>
+                <br /><br>
+                <p style="font-weight: bold;">
+                    Từ/Chữ Cái Tương Ứng:
+                    <span style="font-weight: bold;" id="result"></span>
+                    <br />Độ Chính Xác:
+                    <span id="confidence"></span>
+                </p>
+            </div>
+            <div id="videoContainer"></div>
+            <div class="container1 card rounded">
+                <h2 class="text-center" style="font-weight: bolder;">Các Ký Hiệu Được Hỗ Trợ</h2>
+                <br>
+                <img src="../docs/STL-100.jpg" style="border: 2px solid #ff9900;border-radius: 1%;" width="300" height="400" />
+            </div>
+        </div>
+        <div class="hide">
+            <p><span id="modelStatus">Đang Tải MobileNet</span></p>
+            <p>
+                <button id="A">Thêm A</button>
+                <span id="A">0</span> A<br />
+                <button id="B">Thêm B</button>
+                <span id="B">0</span> B<br />
+                <button id="C">Thêm C</button>
+                <span id="C">0</span> C<br />
+                <button id="D">Thêm D</button>
+                <span id="D">0</span> D<br />
+                <button id="L">Thêm L</button>
+                <span id="L">0</span> L<br />
+                <button id="O">Thêm O</button>
+                <span id="O">0</span> O<br />
+                <button id="Ok">Thêm Ok</button>
+                <span id="Ok">0</span> Ok<br />
+                <button id="Bad">Thêm Bad</button>
+                <span id="Bad">0</span> Bad<br />
+                <button id="I_love_you">Thêm I love You</button>
+                <span id="I_love_you">0</span> I love you<br />
+                <button id="Good">Thêm Good</button>
+                <span id="Good">0</span> Good<br />
+                <button id="Hello">Thêm Hello</button>
+                <span id="Hello">0</span> Hello<br />
+                <button id="That">Thêm That</button>
+                <span id="That">0</span> That<br />
+                <br />
+                <button id="train">Huấn Luyện</button><span id="loss"></span>
+            </p>
+            <p>
+                <button id="save">Lưu Mô Hình</button>
+                <label for="avatar">Tải Mô Hình:</label>
+                <input type="file" id="load" multiple />
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Thanh Dat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let mainNav = document.getElementById('js-menu');
+        let navBarToggle = document.getElementById('js-navbar-toggle');
+        navBarToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+        // Tab functionality
+        function openTab(tabId) {
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            // Remove active class from all tab buttons
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            // Show the selected tab content and mark its button as active
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        // Preloader
+        $(window).on('load', function() {
+            $('#status').fadeIn();
+            $('#preloader').fadeOut();
+            $('body').css({
+                'overflow': 'visible'
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+# Redirect zybTrackerStatisticsAction requests to prevent 404 errors
+RewriteEngine On
+RewriteRule ^hybridaction/zybTrackerStatisticsAction - [L,R=204]
+
+# Fix model.weights.bin path issue
+RewriteRule ^Sign-Language-Translator/templates/model.weights.bin /templates/model.weights.bin [L]

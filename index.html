@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRUSK - Sign Language </title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/a658a7b479.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" type="image/png" href="docs/logo.png">
+    <link rel="stylesheet" type="text/css" href="static/drusk-style.css">
+    <script src="templates/js/tutorial.js"></script>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo drusk-logo">DRUSK <span>Sign Language</span></a>
+            <ul class="main-nav" id="js-menu">
+                <li>
+                    <a href="index.html" class="nav-links active">Hướng Dẫn</a>
+                </li>
+                <li>
+                    <a href="templates/Training.html" class="nav-links">Huấn Luyện & Kiểm Tra</a>
+                </li>
+            </ul>
+            <span class="navbar-toggle" id="js-navbar-toggle">
+                <button class="btn" onClick={this.buttonclicked}><i class="fas fa-bars"></i></button>
+            </span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>DRUSK Sign Language</h1>
+            <p>Công cụ hiện đại giúp bạn học và thực hành ngôn ngữ ký hiệu một cách dễ dàng</p>
+        </div>
+    </section>
+
+    <!-- Learning Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="text-center">Khu Vực Học Tập <i class="fas fa-graduation-cap feature-icon"></i></h2>
+            
+            <!-- Search Box -->
+            <div class="search-box">
+                <input id="inputClassName" type="text" class="search-input" placeholder="Tìm kiếm tại đây" name="option" />
+                <button class="search-button" id="add-button">Tìm kiếm <i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="test-class" id="test"></div>
+            
+            <!-- Tutorial Container -->
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <img src="static/ISL_Gifs/65-sign-language-interpreter.gif" class="tutorial-image" style="width: 100%; height: auto;">
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Các Cụm Từ Thường Dùng Nhất <i class="fab fa-galactic-senate"></i></h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <ul style="list-style: none;">
+                                        <li><button id="62" value="62" type="button" class="btn btn-outline">Tôi có thể giúp bạn không</button></li>
+                                        <li><button id="47" value="47" type="button" class="btn btn-outline">Hãy đi ăn trưa</button></li>
+                                        <li><button id="53" value="53" type="button" class="btn btn-outline">Rất vui được gặp bạn</button></li>
+                                        <li><button id="81" value="81" type="button" class="btn btn-outline">Tên bạn là gì</button></li>
+                                        <li><button id="56" value="56" type="button" class="btn btn-outline">Vui lòng gọi lại cho tôi sau</button></li>
+                                        <li><button id="79" value="79" type="button" class="btn btn-outline">Hôm nay là ngày mấy</button></li>
+                                        <li><button id="20" value="20" type="button" class="btn btn-outline">Bạn có tiền không</button></li>
+                                        <li><button id="83" value="83" type="button" class="btn btn-outline">Nhà vệ sinh ở đâu</button></li>
+                                    </ul>
+                                </div>
+                                <div class="col">
+                                    <ul style="list-style: none;">
+                                        <li><button id="29" value="29" type="button" class="btn btn-outline">Xin chào</button></li>
+                                        <li><button id="33" value="33" type="button" class="btn btn-outline">Tôi khỏe</button></li>
+                                        <li><button id="68" value="68" type="button" class="btn btn-outline">Giữ gìn sức khỏe</button></li>
+                                        <li><button id="34" value="34" type="button" class="btn btn-outline">Tôi xin lỗi</button></li>
+                                        <li><button id="11" value="11" type="button" class="btn btn-outline">Hãy cẩn thận</button></li>
+                                        <li><button id="54" value="54" type="button" class="btn btn-outline">Mở cửa ra</button></li>
+                                        <li><button id="3" value="3" type="button" class="btn btn-outline">Có câu hỏi nào không</button></li>
+                                        <li><button id="5" value="5" type="button" class="btn btn-outline">Bạn có đói không</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alphabet Section -->
+    <section class="section" style="background-color: var(--light-bg);">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Bảng Chữ Cái <i class="fas fa-sort-alpha-up"></i></h3>
+                </div>
+                <div class="card-body">
+                    <div class="alphabet-grid">
+                        <a href="#test" class="alphabet-item" id="a">A</a>
+                        <a href="#test" class="alphabet-item" id="b">B</a>
+                        <a href="#test" class="alphabet-item" id="c">C</a>
+                        <a href="#test" class="alphabet-item" id="d">D</a>
+                        <a href="#test" class="alphabet-item" id="e">E</a>
+                        <a href="#test" class="alphabet-item" id="f">F</a>
+                        <a href="#test" class="alphabet-item" id="g">G</a>
+                        <a href="#test" class="alphabet-item" id="h">H</a>
+                        <a href="#test" class="alphabet-item" id="i">I</a>
+                        <a href="#test" class="alphabet-item" id="j">J</a>
+                        <a href="#test" class="alphabet-item" id="k">K</a>
+                        <a href="#test" class="alphabet-item" id="l">L</a>
+                        <a href="#test" class="alphabet-item" id="m">M</a>
+                        <a href="#test" class="alphabet-item" id="n">N</a>
+                        <a href="#test" class="alphabet-item" id="o">O</a>
+                        <a href="#test" class="alphabet-item" id="p">P</a>
+                        <a href="#test" class="alphabet-item" id="q">Q</a>
+                        <a href="#test" class="alphabet-item" id="r">R</a>
+                        <a href="#test" class="alphabet-item" id="s">S</a>
+                        <a href="#test" class="alphabet-item" id="t">T</a>
+                        <a href="#test" class="alphabet-item" id="u">U</a>
+                        <a href="#test" class="alphabet-item" id="v">V</a>
+                        <a href="#test" class="alphabet-item" id="w">W</a>
+                        <a href="#test" class="alphabet-item" id="x">X</a>
+                        <a href="#test" class="alphabet-item" id="y">Y</a>
+                        <a href="#test" class="alphabet-item" id="z">Z</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Places & Objects Section -->
+    <section class="section">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Địa Điểm, Thời Gian và Đồ Vật <i class="far fa-clock"></i></h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <ul style="list-style: none;">
+                                <li><a href="#test" class="btn btn-outline" id="64" value="64">Shop</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="60" value="60">Punjab</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="69" value="69">Temple</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="51" value="51">Mumbai</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="61" value="61">Saturday</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="77" value="77">Wednesday</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="57" value="57">Police station</a></li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul style="list-style: none;">
+                                <li><a href="#test" class="btn btn-outline" id="13" value="13">Cat</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="42" value="42">July</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="59" value="59">Pune</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="12" value="12">Bridge</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="28" value="28">Grapes</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="10" value="10">Banglore</a></li>
+                                <li><a href="#test" class="btn btn-outline" id="18" value="18">December</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Thanh Dat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let mainNav = document.getElementById('js-menu');
+        let navBarToggle = document.getElementById('js-navbar-toggle');
+
+        navBarToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    </script>
+</body>
+
+</html>
